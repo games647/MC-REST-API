@@ -17,7 +17,13 @@ class ApiController extends Controller
         if ($cached !== NULL) {
             $file_loc = $this->path('uuid:' . $name);
             $inserted = filemtime($file_loc);
-            return ["id" => $cached, "name" => $name, 'source' => 'cache', 'timestamp' => $inserted];
+            $offline_uuid = $this->getOfflineUUID($name);
+            return [
+                "id" => $cached,
+                "name" => $name,
+                'source' => 'cache',
+                'timestamp' => $inserted,
+                'cracked' => $offline_uuid];
         }
 
         $url = str_replace("<username>", $name, self::UUID_URL);
@@ -36,8 +42,13 @@ class ApiController extends Controller
 
             $data = json_decode($response, true);
             $uuid = $data['id'];
+            $offline_uuid = $this->getOfflineUUID($name);
             Cache::put('uuid:' . $name, $uuid, env('CACHE_LENGTH', 10));
-            return ["id" => $data['id'], "name" => $data['name'], 'source' => 'mojang'];
+            return [
+                'id' => $data['id'],
+                'name' => $data['name'],
+                'source' => 'mojang',
+                'cracked' => $offline_uuid];
         } catch (Exception $ex) {
             throw $ex;
         } finally {
@@ -55,5 +66,22 @@ class ApiController extends Controller
     {
         $parts = array_slice(str_split($hash = sha1($key), 2), 0, 2);
         return storage_path('framework/cache') . '/' . implode('/', $parts) . '/' . $hash;
+    }
+
+    /**
+     * Generates a offline-mode player UUID.
+     *
+     * @param $username string
+     * @return string
+     */
+    private function getOfflineUUID($username) {
+        //extracted from the java code:
+        //new GameProfile(UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8)), name));
+        $data = hex2bin(md5("OfflinePlayer:" . $username));
+        //set the version to 3 -> Name based md5 hash
+        $data[6] = chr(ord($data[6]) & 0x0f | 0x30);
+        //IETF variant
+        $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
+        return bin2hex($data);
     }
 }
