@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use \Cache;
+
 class ApiController extends Controller
 {
 
@@ -11,6 +13,11 @@ class ApiController extends Controller
 
     public function uuid($name)
     {
+        $cached = Cache::get('uuid:' . $name);
+        if ($cached !== NULL) {
+            return array("id" => $cached, "name" => $name, 'source' => 'cache');
+        }
+
         $url = str_replace("<username>", $name, self::UUID_URL);
 
         $request = curl_init($url);
@@ -26,7 +33,9 @@ class ApiController extends Controller
             }
 
             $data = json_decode($response, true);
-            return array("id" => $data['id'], "name" => $data['name']);
+            $uuid = $data['id'];
+            Cache::put('uuid:' . $name, $uuid, 10);
+            return array("id" => $data['id'], "name" => $data['name'], 'source' => 'mojang');
         } catch (Exception $ex) {
             throw $ex;
         } finally {
