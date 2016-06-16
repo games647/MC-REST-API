@@ -35,6 +35,12 @@ class ApiController extends Controller
         curl_setopt($request, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($request, CURLOPT_FOLLOWLOCATION, TRUE);
         curl_setopt($request, CURLOPT_SSL_VERIFYPEER, FALSE);
+        $source_ips = explode('|', env('SOURCE_IPS'));
+        if (!empty($source_ips)) {
+            $random_index = array_rand($source_ips);
+            curl_setopt($request, CURLOPT_INTERFACE, $source_ips[$random_index]);
+        }
+
         try {
             $response = curl_exec($request);
 
@@ -42,7 +48,11 @@ class ApiController extends Controller
             if ($curl_info['http_code'] !== 200) {
                 if ($curl_info['http_code'] == self::RATE_LIMIT) {
                     $player = Player::whereName($name)->getOrFail();
-                    return $player;
+                    return [
+                        'id' => $player->uuid,
+                        'name' => $player->name,
+                        'source' => 'database',
+                        'cracked' => $player->offline_uuid];
                 }
 
                 return response("Return code: " . $curl_info['http_code'] . curl_error($request), 500);
