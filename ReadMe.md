@@ -1,6 +1,8 @@
 # MC-REST-API
 
-Keep in mind that this project is in beta. All issues should be reported.
+Keep in mind that this project is in beta. So there could be breaking changes.
+
+All issues should be reported.
 
 ## ToDo
 
@@ -9,7 +11,7 @@ Keep in mind that this project is in beta. All issues should be reported.
 - [X] Cache with configurable amount of time (and visible in the json format)
 - [X] Persistent database (visible in the JSON format)
 - [X] Configurable different source IPs sending the request to Mojang
-- [ ] Skin API
+- [X] Skin API
 - [ ] Avater API Skin/Head
 - [ ] Server Query API (with MCPE and i.e. icon only)
 - [ ] Buycraft API
@@ -23,6 +25,8 @@ Keep in mind that this project is in beta. All issues should be reported.
 - [ ] Random requests
 - [ ] UUID -> Name resolve
 - [ ] Web stats
+- [ ] Validate input requests
+- [ ] Banner Generator (skin and head)
 
 ## Routes
 

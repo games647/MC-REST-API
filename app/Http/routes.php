@@ -11,8 +11,5 @@
 |
 */
 
-$app->get('/', function () use ($app) {
-    return $app->version();
-});
-
-$app->get('/uuid/{name}', 'ApiController@uuid');
+$app->get('/uuid/{name}', 'NameController@uuid');
+$app->get('/skin/{uuid}', 'SkinController@skin');
