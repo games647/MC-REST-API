@@ -15,7 +15,9 @@ class ApiController extends Controller
     {
         $cached = Cache::get('uuid:' . $name);
         if ($cached !== NULL) {
-            return array("id" => $cached, "name" => $name, 'source' => 'cache');
+            $file_loc = $this->path('uuid:' . $name);
+            $inserted = filemtime($file_loc);
+            return ["id" => $cached, "name" => $name, 'source' => 'cache', 'timestamp' => $inserted];
         }
 
         $url = str_replace("<username>", $name, self::UUID_URL);
@@ -35,11 +37,23 @@ class ApiController extends Controller
             $data = json_decode($response, true);
             $uuid = $data['id'];
             Cache::put('uuid:' . $name, $uuid, env('CACHE_LENGTH', 10));
-            return array("id" => $data['id'], "name" => $data['name'], 'source' => 'mojang');
+            return ["id" => $data['id'], "name" => $data['name'], 'source' => 'mojang'];
         } catch (Exception $ex) {
             throw $ex;
         } finally {
             curl_close($request);
         }
+    }
+
+    /**
+     * Get the full path for the given cache key.
+     *
+     * @param  string  $key
+     * @return string
+     */
+    protected function path($key)
+    {
+        $parts = array_slice(str_split($hash = sha1($key), 2), 0, 2);
+        return storage_path('framework/cache') . '/' . implode('/', $parts) . '/' . $hash;
     }
 }
