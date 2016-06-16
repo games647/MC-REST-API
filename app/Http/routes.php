@@ -13,3 +13,4 @@
 
 $app->get('/uuid/{name}', 'NameController@uuid');
 $app->get('/skin/{uuid}', 'SkinController@skin');
+$app->get('/domain/{domain}', 'OtherController@domain_records');
