@@ -10,7 +10,14 @@ Keep in mind that this project is in beta. All issues should be reported.
 - [X] Persistent database (visible in the JSON format)
 - [X] Configurable different source IPs sending the request to Mojang
 - [ ] Skin API
+- [ ] Avater API Skin/Head
+- [ ] Server Query API (with MCPE and i.e. icon only)
+- [ ] Buycraft API
+- [ ] SRV Resolve
+- [ ] Has paid API
+- [ ] Is up server query
 - [ ] Name History API
+- [ ] Multiple Name resolve requests
 - [ ] Wait some milliseconds to make concat some requests into a single one
 - [ ] Master-Slave support?
 - [ ] Random requests

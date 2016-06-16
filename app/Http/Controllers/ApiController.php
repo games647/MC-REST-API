@@ -35,10 +35,11 @@ class ApiController extends Controller
         curl_setopt($request, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($request, CURLOPT_FOLLOWLOCATION, TRUE);
         curl_setopt($request, CURLOPT_SSL_VERIFYPEER, FALSE);
-        $source_ips = explode('|', env('SOURCE_IPS'));
+        $source_ips = env('SOURCE_IPS');
         if (!empty($source_ips)) {
-            $random_index = array_rand($source_ips);
-            curl_setopt($request, CURLOPT_INTERFACE, $source_ips[$random_index]);
+            $ips = explode('|', env('SOURCE_IPS'));
+            $random_index = array_rand($ips);
+            curl_setopt($request, CURLOPT_INTERFACE, $ips[$random_index]);
         }
 
         try {
@@ -60,7 +61,9 @@ class ApiController extends Controller
 
             $data = json_decode($response, true);
 
-            $player = new Player();
+            $uuid = $data['id'];
+
+            $player = Player::firstOrNew(['uuid' => $uuid]);
             $player->uuid = $data['id'];
             $player->offline_uuid = $this->getOfflineUUID($name);
             $player->name = $data['name'];
