@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use \Cache;
+use \App\Player;
 
 class ApiController extends Controller
 {
@@ -10,6 +11,8 @@ class ApiController extends Controller
     const UUID_URL = "https://api.mojang.com/users/profiles/minecraft/<username>";
     const UUID_TIME_URL = "https://api.mojang.com/users/profiles/minecraft/<username>?at=<timestamp>";
     const MULTIPLE_UUID_URL = "https://api.mojang.com/profiles/minecraft";
+
+    const RATE_LIMIT = 429;
 
     public function uuid($name)
     {
@@ -37,18 +40,28 @@ class ApiController extends Controller
 
             $curl_info = curl_getinfo($request);
             if ($curl_info['http_code'] !== 200) {
-                return response("Return code: " . $curl_info['http_code'] . curl_error($request));
+                if ($curl_info['http_code'] == self::RATE_LIMIT) {
+                    $player = Player::whereName($name)->getOrFail();
+                    return $player;
+                }
+
+                return response("Return code: " . $curl_info['http_code'] . curl_error($request), 500);
             }
 
             $data = json_decode($response, true);
-            $uuid = $data['id'];
-            $offline_uuid = $this->getOfflineUUID($name);
-            Cache::put('uuid:' . $name, $uuid, env('CACHE_LENGTH', 10));
+
+            $player = new Player();
+            $player->uuid = $data['id'];
+            $player->offline_uuid = $this->getOfflineUUID($name);
+            $player->name = $data['name'];
+            $player->save();
+
+            Cache::put('uuid:' . $name, $player->uuid, env('CACHE_LENGTH', 10));
             return [
-                'id' => $data['id'],
-                'name' => $data['name'],
+                'id' => $player->uuid,
+                'name' => $player->name,
                 'source' => 'mojang',
-                'cracked' => $offline_uuid];
+                'cracked' => $player->offline_uuid];
         } catch (Exception $ex) {
             throw $ex;
         } finally {

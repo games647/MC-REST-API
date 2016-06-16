@@ -11,6 +11,9 @@
 - [ ] Name History API
 - [ ] Wait some milliseconds to make concat some requests into a single one
 - [ ] Master-Slave support?
+- [ ] Random requests
+- [ ] UUID -> Name resolve
+- [ ] Web stats
 
 ## Routes
 
