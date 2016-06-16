@@ -49,10 +49,13 @@ Framework documentation: https://lumen.laravel.com/docs/5.2
 
 * JSON Browser Plugin
 Chrome: JSON View:  https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc
+
 Firefox: JSON View: https://addons.mozilla.org/en-US/firefox/addon/10869/
 
 ## Routes
 
 GET /uuid/{playerName}
+
 GET /skin/{uuid}
+
 GET /domain/{domain}
