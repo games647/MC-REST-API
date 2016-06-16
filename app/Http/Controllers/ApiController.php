@@ -34,7 +34,7 @@ class ApiController extends Controller
 
             $data = json_decode($response, true);
             $uuid = $data['id'];
-            Cache::put('uuid:' . $name, $uuid, 10);
+            Cache::put('uuid:' . $name, $uuid, env('CACHE_LENGTH', 10));
             return array("id" => $data['id'], "name" => $data['name'], 'source' => 'mojang');
         } catch (Exception $ex) {
             throw $ex;
