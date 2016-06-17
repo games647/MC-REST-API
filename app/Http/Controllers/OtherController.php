@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-class OtherController
+use \App\Player;
+use \Cache;
+
+class OtherController extends ApiController
 {
-    public function domain_records($domain)
+    public function domainRecords($domain)
     {
 	if (ip2long($domain) !== FALSE) {
 	    //it's not a domain it's a IP-Address which we cannot resolve

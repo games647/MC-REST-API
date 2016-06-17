@@ -61,6 +61,67 @@ class NameController extends ApiController
         }
     }
 
+    public function hasPaid($name)
+    {
+        /* @var $cached Player */
+        $cached = Cache::get('uuid:' . $name);
+        if ($cached !== NULL) {
+            return [
+                'username' => $cached->name,
+                'premium' => is_null($cached->uuid),
+                'source' => 'cache',
+                'updated_at' => $cached->updated_at];
+        }
+
+        $url = str_replace("<username>", $name, NameController::UUID_URL);
+        $request = $this->getConnection($url);
+        try {
+            $response = curl_exec($request);
+
+            $curl_info = curl_getinfo($request);
+            $response_code = $curl_info['http_code'];
+            switch ($response_code) {
+                case ApiController::RATE_LIMIT_CODE:
+                    $player = Player::whereName($name)->getOrFail();
+                    return [
+                        'username' => $cached->name,
+                        'premium' => is_null($player->uuid),
+                        'source' => 'database',
+                        'updated_at' => $cached->updated_at];
+                case ApiController::UNKOWN_CODE:
+                    $player = Player::firstOrNew(['name' => $name]);
+                    $player->offline_uuid = $this->getOfflineUUID($name);
+                    $player->name = $name;
+                    $player->save();
+
+                    Cache::put('uuid:' . $name, $player, env('CACHE_LENGTH', 10));
+                    return ['username' => $cached->name, 'premium' => is_null($player->uuid), 'source' => 'mojang'];
+                case 200:
+                    break;
+                default:
+                    return response("Please report this return: " . $response_code . curl_error($request), 500);
+            }
+
+            $data = json_decode($response, true);
+
+            $uuid = $data['id'];
+
+            $player = Player::firstOrNew(['uuid' => $uuid]);
+            $player->uuid = $uuid;
+            $player->offline_uuid = $this->getOfflineUUID($name);
+            $player->name = $data['name'];
+            $player->save();
+
+            Cache::put('uuid:' . $name, $player, env('CACHE_LENGTH', 10));
+            return [
+                'username' => $player->name,
+                'premium' => is_null($player->uuid),
+                'source' => 'mojang'];
+        } finally {
+            curl_close($request);
+        }
+    }
+
     /**
      * Generates a offline-mode player UUID.
      *

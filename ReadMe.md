@@ -17,7 +17,7 @@ All issues should be reported.
 - [ ] Server Query API (with MCPE and i.e. icon only)
 - [ ] Buycraft API
 - [X] SRV Resolve
-- [ ] Has paid API
+- [X] Has paid API
 - [ ] Is up query
 - [ ] Name History API
 - [ ] Multiple Name resolve requests
