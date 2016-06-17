@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Skin extends Migration
+class CreateSkinsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -44,6 +44,6 @@ class Skin extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('skins');
     }
 }

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UuidNameTable extends Migration
+class CreatePlayersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -33,6 +33,6 @@ class UuidNameTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('players');
     }
 }
