@@ -10,7 +10,9 @@
         "vlucas/phpdotenv": "~2.2",
         "barryvdh/laravel-ide-helper": "^2.2",
         "doctrine/dbal": "^2.5",
-        "games647/minecraft-skin-renderer": "^0.2.1"
+        "games647/minecraft-skin-renderer": "^0.2.1",
+        "predis/predis": "^1.1",
+        "illuminate/redis": "^5.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
