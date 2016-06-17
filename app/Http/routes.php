@@ -13,7 +13,11 @@
 
 $app->get('/uuid/{name}', 'NameController@uuid');
 $app->get('/hasPaid/{username}', 'NameController@hasPaid');
-$app->get('/skin/{uuid}', 'SkinController@skin');
+
+$app->get('/properties/{uuid}', 'SkinController@skin');
+$app->get('/skin/{uuid}', 'SkinController@skinImage');
+$app->get('/avatar/{uuid}', 'SkinController@avatarImage');
+
 $app->get('/domain/{domain}', 'OtherController@domainRecords');
 
 $app->get('/stats', 'StatsController@info');

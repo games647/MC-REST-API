@@ -6,14 +6,14 @@ All issues should be reported.
 
 ## ToDo
 
-- [ ] Website Documentation with live testing
+- [ ] Website Documentation with live testing (Searching for help for this)
 - [X] Name->UUID Basic feature
 - [X] Cache it for ten minutes
 - [X] Cache with configurable amount of time (and visible in the json format)
 - [X] Persistent database (visible in the JSON format)
 - [X] Configurable different source IPs sending the request to Mojang
 - [X] Skin API
-- [ ] Avater API Skin/Head
+- [X] Avater API Skin/Head
 - [ ] Server Query API (with MCPE and i.e. icon only)
 - [ ] Buycraft API
 - [X] SRV Resolve
@@ -32,6 +32,16 @@ All issues should be reported.
 - [ ] Blocked server query
 - [ ] Ban API
 - [ ] Mojang Assets, Status API
+- [ ] Caching (and cache headers) for images
+
+## Goals
+
+* Workaround rate-limiting by global caching
+* Flexible API (if you have suggestions let us know)
+* Developer friendly responses -> i.e. return a cracked player response if there is a issue with our servers
+* Open Source
+* Open for changes and suggestions
+* Simulate a Mojang API out of the box
 
 ## Setup
 
@@ -44,6 +54,12 @@ All issues should be reported.
 ## Development
 
 Framework documentation: https://lumen.laravel.com/docs/5.2
+
+## Credits
+
+Some libraries are used or splitted into modules in order to keep the project simple. Here is the list of lib in use.
+
+* https://github.com/games647/Minecraft-Skin-Renderer
 
 ### Recommendations
 
