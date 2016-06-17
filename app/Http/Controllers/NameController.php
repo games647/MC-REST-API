@@ -32,7 +32,6 @@ class NameController extends ApiController
                     return collect($player)->put('source', 'database');
                 case ApiController::UNKOWN_CODE:
                     $player = Player::firstOrNew(['name' => $name]);
-                    $player->offline_uuid = $this->getOfflineUUID($name);
                     $player->name = $name;
                     $player->save();
 
@@ -50,7 +49,6 @@ class NameController extends ApiController
 
             $player = Player::firstOrNew(['uuid' => $uuid]);
             $player->uuid = $uuid;
-            $player->offline_uuid = $this->getOfflineUUID($name);
             $player->name = $data['name'];
             $player->save();
 
@@ -68,7 +66,7 @@ class NameController extends ApiController
         if ($cached !== NULL) {
             return [
                 'username' => $cached->name,
-                'premium' => is_null($cached->uuid),
+                'premium' => !is_null($cached->uuid),
                 'source' => 'cache',
                 'updated_at' => $cached->updated_at];
         }
@@ -85,17 +83,16 @@ class NameController extends ApiController
                     $player = Player::whereName($name)->getOrFail();
                     return [
                         'username' => $cached->name,
-                        'premium' => is_null($player->uuid),
+                        'premium' => !is_null($player->uuid),
                         'source' => 'database',
                         'updated_at' => $cached->updated_at];
                 case ApiController::UNKOWN_CODE:
                     $player = Player::firstOrNew(['name' => $name]);
-                    $player->offline_uuid = $this->getOfflineUUID($name);
                     $player->name = $name;
                     $player->save();
 
                     Cache::put('uuid:' . $name, $player, env('CACHE_LENGTH', 10));
-                    return ['username' => $cached->name, 'premium' => is_null($player->uuid), 'source' => 'mojang'];
+                    return ['username' => $cached->name, 'premium' => !is_null($player->uuid), 'source' => 'mojang'];
                 case 200:
                     break;
                 default:
@@ -108,34 +105,16 @@ class NameController extends ApiController
 
             $player = Player::firstOrNew(['uuid' => $uuid]);
             $player->uuid = $uuid;
-            $player->offline_uuid = $this->getOfflineUUID($name);
             $player->name = $data['name'];
             $player->save();
 
             Cache::put('uuid:' . $name, $player, env('CACHE_LENGTH', 10));
             return [
                 'username' => $player->name,
-                'premium' => is_null($player->uuid),
+                'premium' => !is_null($player->uuid),
                 'source' => 'mojang'];
         } finally {
             curl_close($request);
         }
-    }
-
-    /**
-     * Generates a offline-mode player UUID.
-     *
-     * @param $username string
-     * @return string
-     */
-    private function getOfflineUUID($username) {
-        //extracted from the java code:
-        //new GameProfile(UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8)), name));
-        $data = hex2bin(md5("OfflinePlayer:" . $username));
-        //set the version to 3 -> Name based md5 hash
-        $data[6] = chr(ord($data[6]) & 0x0f | 0x30);
-        //IETF variant
-        $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
-        return bin2hex($data);
     }
 }

@@ -29,6 +29,8 @@ use \Carbon\Carbon;
  * @method static \Illuminate\Database\Query\Builder|\App\Skin whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Skin whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read mixed $encoded_data
+ * @property-read mixed $encoded_signature
  */
 class Skin extends Model
 {
@@ -39,7 +41,7 @@ class Skin extends Model
     {
         $keyPath = database_path("yggdrasil_session_pubkey.key");
         $pub_key = file_get_contents($keyPath);
-        return openssl_verify($this->getEncodedData(), $this->signature, $pub_key, "RSA-SHA1");
+        return openssl_verify($this->encoded_data, $this->signature, $pub_key, "RSA-SHA1");
     }
 
     public function getCreatedAtAttribute($value)
@@ -58,19 +60,25 @@ class Skin extends Model
         $data['timestamp'] = $this->timestamp;
         $data['profileId'] = str_replace("-", "", $this->profile_id);
         $data['profileName'] = $this->profile_name;
+        //always append this
         $data['signatureRequired'] = true;
 
         $textures = array();
-        if ($this->slim_model) {
-            $textures['SKIN']["metadata"] = ["model" => "slim"];
-        }
-
         if ($this->skin_url) {
-            $textures['SKIN'] = ["url" => $this->skin_url];
+            if ($this->slim_model) {
+                $textures['SKIN']["metadata"] = ["model" => "slim"];
+            }
+
+            $textures['SKIN']["url"] = $this->skin_url;
         }
 
         if ($this->cape_url) {
             $textures['CAPE'] = ["url" => $this->cape_url];
+        }
+
+        if (empty($textures)) {
+            //make a new object in order to use {} brackets instead of []
+            $textures = new \stdClass();
         }
 
         $data['textures'] = $textures;

@@ -33,6 +33,24 @@ class Player extends Model {
         'name', 'uuid',
     ];
 
+    protected $appends = ['offline_uuid'];
+
+    /**
+     * Generates a offline-mode player UUID.
+     *
+     * @return string
+     */
+    public function getOfflineUuidAttribute() {
+        //extracted from the java code:
+        //new GameProfile(UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8)), name));
+        $data = hex2bin(md5("OfflinePlayer:" . $this->name));
+        //set the version to 3 -> Name based md5 hash
+        $data[6] = chr(ord($data[6]) & 0x0f | 0x30);
+        //IETF variant
+        $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
+        return bin2hex($data);
+    }
+
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->timestamp;

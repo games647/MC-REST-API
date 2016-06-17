@@ -31,6 +31,7 @@ All issues should be reported.
 - [ ] Votifier API
 - [ ] Blocked server query
 - [ ] Ban API
+- [ ] Legacy (Mojang like routes and responses)
 - [ ] Mojang Assets, Status API
 - [ ] Caching (and cache headers) for images
 
@@ -38,7 +39,7 @@ All issues should be reported.
 
 * Workaround rate-limiting by global caching
 * Flexible API (if you have suggestions let us know)
-* Developer friendly responses -> i.e. return a cracked player response if there is a issue with our servers
+* Developer friendly, clear responses -> i.e. NOT returning a cracked player response if there is a issue with our servers
 * Open Source
 * Open for changes and suggestions
 * Simulate a Mojang API out of the box
@@ -46,20 +47,38 @@ All issues should be reported.
 ## Setup
 
 1. Clone this project
-2. Make a .env for local configuration
-3. Check the configuration settings
-4. Let your webserver point to the public directory
-5. Start the all the necessary servers (i.e. MySQL, memcache, redis, NGINX...)
+2. Run ```composer install``` or as a developer ```composer install --dev```
+3. Make a .env for local configuration
+4. Check the configuration settings
+5. Let your webserver point to the public directory
+6. Start the all the necessary servers (i.e. MySQL, memcache, redis, NGINX...)
+7. Setup the database structure: ```php artisan migrate```
 
 ## Development
 
 Framework documentation: https://lumen.laravel.com/docs/5.2
 
-## Credits
+### Update model documentation
+
+php artisan ide-helper:models
+yes
+
+### Update auto complete documentation for IDE
+
+php artisan ide-helper:generate
+
+### Change the database schema (add or change table structure)
+
+php artisan make:migration
+
+Edit the file what should happen if the migration run (Up) and how it can be reverted (Down)
+
+### Credits
 
 Some libraries are used or splitted into modules in order to keep the project simple. Here is the list of lib in use.
 
 * https://github.com/games647/Minecraft-Skin-Renderer
+* https://github.com/xPaw/PHP-Minecraft-Query/
 
 ### Recommendations
 
