@@ -25,7 +25,7 @@ All issues should be reported.
 - [ ] Master-Slave support?
 - [ ] Random requests
 - [ ] UUID -> Name resolve
-- [ ] Web stats
+- [X] Web stats
 - [ ] Validate input requests
 - [ ] Banner Generator (skin and head)
 - [ ] Votifier API
