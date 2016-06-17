@@ -6,7 +6,7 @@ All issues should be reported.
 
 ## ToDo
 
-- [ ] Documentation
+- [ ] Website Documentation with live testing
 - [X] Name->UUID Basic feature
 - [X] Cache it for ten minutes
 - [X] Cache with configurable amount of time (and visible in the json format)

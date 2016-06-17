@@ -61,10 +61,12 @@ class Skin extends Model
         $data['signatureRequired'] = true;
 
         $textures = array();
-        $textures['SKIN'] = ["url" => $this->skin_url];
-
         if ($this->slim_model) {
             $textures['SKIN']["metadata"] = ["model" => "slim"];
+        }
+
+        if ($this->skin_url) {
+            $textures['SKIN'] = ["url" => $this->skin_url];
         }
 
         if ($this->cape_url) {

@@ -26,7 +26,11 @@ class SkinController extends ApiController
             $response_code = $curl_info['http_code'];
             switch ($response_code) {
                 case ApiController::RATE_LIMIT_CODE:
-                    $player = Skin::whereUUID($uuid)->getOrFail();
+                    $player = Skin::whereUUID($uuid)->get();
+                    if ($player == null) {
+                        return response('', 429);
+                    }
+
                     return collect($player)->put('source', 'database');
                 case ApiController::UNKOWN_CODE:
                     return response('', 404);
@@ -48,17 +52,16 @@ class SkinController extends ApiController
             $skin->profile_name = $skinData['profileName'];
 
             $textures = $skinData['textures'];
-            if (!isset($textures['SKIN'])) {
-                return response("No skin set", 500);
-            }
+            if (isset($textures['SKIN'])) {
+                //no skin set
+                $skinTextures = $textures['SKIN'];
+                $skin->skin_url = $skinTextures['url'];
+                $skin->slim_model = isset($skinTextures['metadata']);
 
-            $skinTextures = $textures['SKIN'];
-            $skin->skin_url = $skinTextures['url'];
-            $skin->slim_model = isset($skinTextures['metadata']);
-
-            if (isset($textures['CAPE'])) {
-                //user has a cape
-                $skin->cape_url = $textures['CAPE']['url'];
+                if (isset($textures['CAPE'])) {
+                    //user has a cape
+                    $skin->cape_url = $textures['CAPE']['url'];
+                }
             }
 
             $skin->save();
