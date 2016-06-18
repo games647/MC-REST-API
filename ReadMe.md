@@ -15,21 +15,21 @@ All issues should be reported.
 - [X] Skin API
 - [X] Avater API Skin/Head
 - [X] Server Ping API (i.e. icon only)
+- [X] SRV Resolve
+- [X] Has paid API
+- [X] Web stats
+- [ ] Name History API
 - [ ] Server Query API
 - [ ] Support for MCPE servers
 - [ ] Server version mapping
 - [ ] Plugin API
 - [ ] Buycraft API
-- [X] SRV Resolve
-- [X] Has paid API
 - [ ] Is up query
-- [ ] Name History API
 - [ ] Multiple Name resolve requests
 - [ ] Wait some milliseconds to make concat some requests into a single one
 - [ ] Master-Slave support?
 - [ ] Random requests
 - [ ] UUID -> Name resolve
-- [X] Web stats
 - [ ] Validate input requests
 - [ ] Banner Generator (skin and head)
 - [ ] Votifier API
