@@ -14,7 +14,8 @@ All issues should be reported.
 - [X] Configurable different source IPs sending the request to Mojang
 - [X] Skin API
 - [X] Avater API Skin/Head
-- [ ] Server Query API (i.e. icon only)
+- [X] Server Ping API (i.e. icon only)
+- [ ] Server Query API
 - [ ] Support for MCPE servers
 - [ ] Server version mapping
 - [ ] Plugin API

@@ -21,5 +21,9 @@ $app->get('/avatar/{uuid}', 'SkinController@avatarImage');
 $app->get('/domain/{domain}', 'OtherController@domainRecords');
 
 $app->get('/ping/{domain}', 'ServerController@ping');
+$app->get('/ping/{domain}/players', 'ServerController@players');
+$app->get('/ping/{domain}/icon', 'ServerController@icon');
+$app->get('/ping/{domain}/motd', 'ServerController@motd');
+$app->get('/ping/{domain}/playersCount', 'ServerController@playersCount');
 
 $app->get('/stats', 'StatsController@info');

@@ -51,6 +51,10 @@ class ServerController extends ApiController
                 $result->put('favicon', $data['favicon']);
             }
 
+            if (isset($data['players']['sample'])) {
+                $result->put('sample', $data['players']['sample']);
+            }
+
             Cache::put('server:' . $domain . ':' . $port, $result, env('CACHE_SERVER_LENGTH', 5));
             Cache::put('server:' . $unresolved_domain . ':' . $unresolved_port, $result, env('CACHE_SERVER_LENGTH', 5));
 
@@ -69,6 +73,37 @@ class ServerController extends ApiController
                 $Query->Close();
             }
         }
+    }
+
+    public function players($domain, $port = self::MINECRAFT_PORT)
+    {
+        $result = $this->ping($domain, $port);
+        return $result->only(['address', 'port', 'online', 'sample', 'updated_at', 'source']);
+    }
+
+    public function playerCount($domain, $port = self::MINECRAFT_PORT)
+    {
+        $result = $this->ping($domain, $port);
+        return $result->only(['address', 'port', 'online', 'players', 'maxplayers', 'updated_at', 'source']);
+    }
+
+    public function motd($domain, $port = self::MINECRAFT_PORT)
+    {
+        $result = $this->ping($domain, $port);
+        return $result->only(['address', 'port', 'online', 'plain_motd', 'motd', 'updated_at', 'source']);
+    }
+
+    public function icon($domain, $port = self::MINECRAFT_PORT)
+    {
+        $result = $this->ping($domain, $port);
+        $icon_data = $result->get('favicon');
+        $icon_data = str_replace('data:image/png;base64,', '', $icon_data);
+        $icon_data = str_replace(' ', '+', $icon_data);
+        $icon_data = base64_decode($icon_data);
+
+        header('Content-type: image/png');
+        $icon = imagecreatefromstring($icon_data);
+        return imagepng($icon);
     }
 
     protected function resolveMinecraftSRV(&$host, &$port)

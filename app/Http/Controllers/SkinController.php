@@ -58,6 +58,7 @@ class SkinController extends ApiController
                 $raw_skin = imagecreatefrompng($skin_url);
                 $avatar = MinecraftSkins::head($raw_skin, 4);
                 imagepng($avatar, storage_path('app/avatar/' . $uuid . '.png'));
+
                 header('Content-type: image/png');
                 imagepng($avatar);
             } else {
