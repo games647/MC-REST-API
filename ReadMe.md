@@ -14,7 +14,10 @@ All issues should be reported.
 - [X] Configurable different source IPs sending the request to Mojang
 - [X] Skin API
 - [X] Avater API Skin/Head
-- [ ] Server Query API (with MCPE and i.e. icon only)
+- [ ] Server Query API (i.e. icon only)
+- [ ] Support for MCPE servers
+- [ ] Server version mapping
+- [ ] Plugin API
 - [ ] Buycraft API
 - [X] SRV Resolve
 - [X] Has paid API
@@ -39,7 +42,7 @@ All issues should be reported.
 
 * Workaround rate-limiting by global caching
 * Flexible API (if you have suggestions let us know)
-* Developer friendly, clear responses -> i.e. NOT returning a cracked player response if there is a issue with our servers
+* Developer friendly, clear responses -> i.e. **NOT** returning a cracked player response if there is a issue with our servers
 * Open Source
 * Open for changes and suggestions
 * Simulate a Mojang API out of the box
@@ -77,8 +80,9 @@ Edit the file what should happen if the migration run (Up) and how it can be rev
 
 Some libraries are used or splitted into modules in order to keep the project simple. Here is the list of lib in use.
 
-* https://github.com/games647/Minecraft-Skin-Renderer
-* https://github.com/xPaw/PHP-Minecraft-Query/
+* https://github.com/games647/Minecraft-Skin-Renderer (MIT)
+* https://github.com/xPaw/PHP-Minecraft-Query/ (MIT)
+* https://github.com/Spirit55555/PHP-Minecraft (GPLv3)
 
 ### Recommendations
 

@@ -20,4 +20,6 @@ $app->get('/avatar/{uuid}', 'SkinController@avatarImage');
 
 $app->get('/domain/{domain}', 'OtherController@domainRecords');
 
+$app->get('/ping/{domain}', 'ServerController@ping');
+
 $app->get('/stats', 'StatsController@info');

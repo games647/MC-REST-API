@@ -28,7 +28,7 @@ class NameController extends ApiController
             $response_code = $curl_info['http_code'];
             switch ($response_code) {
                 case ApiController::RATE_LIMIT_CODE:
-                    $player = Player::whereName($name)->getOrFail();
+                    $player = Player::whereName($name)->firstOrFail();
                     return collect($player)->put('source', 'database');
                 case ApiController::UNKOWN_CODE:
                     $player = Player::firstOrNew(['name' => $name]);
@@ -80,7 +80,7 @@ class NameController extends ApiController
             $response_code = $curl_info['http_code'];
             switch ($response_code) {
                 case ApiController::RATE_LIMIT_CODE:
-                    $player = Player::whereName($name)->getOrFail();
+                    $player = Player::whereName($name)->firstOrFail();
                     return [
                         'username' => $cached->name,
                         'premium' => !is_null($player->uuid),

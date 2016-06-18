@@ -1,7 +1,6 @@
 <?php
 
 use \App\Skin;
-use \Mockery\Mock;
 
 class SkinTest extends TestCase
 {
