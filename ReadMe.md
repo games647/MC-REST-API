@@ -39,6 +39,7 @@ All issues should be reported.
 - [ ] Mojang Assets, Status API
 - [ ] Caching (and cache headers) for images
 - [ ] Configurable HTTP-Proxies
+- [ ] Unit test the request handling
 
 ## Goals
 
@@ -89,28 +90,28 @@ Some libraries are used or splitted into modules in order to keep the project si
 ### Recommendations
 
 * JSON Browser Plugin
-Chrome: JSON View:  https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc
-
-Firefox: JSON View: https://addons.mozilla.org/en-US/firefox/addon/10869/
+    Chrome: JSON View:  https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc
+    Firefox: JSON View: https://addons.mozilla.org/en-US/firefox/addon/10869/
 
 ## Routes
 
-get('/uuid/{name}')
-get('/hasPaid/{username}')
+* get('/uuid/{name}')
+* get('/hasPaid/{username}')
 
-get('/name-history/{uuid}')
-get('/name-history/{uuid}/{time}')
+* get('/name-history/{uuid}/all')
+* get('/name-history/{uuid}')
+* get('/name-history/{uuid}/{time}')
 
-get('/properties/{uuid}')
-get('/skin/{uuid}')
-get('/avatar/{uuid}')
+* get('/properties/{uuid}')
+* get('/skin/{uuid}')
+* get('/avatar/{uuid}')
 
-get('/domain/{domain}')
+*  get('/domain/{domain}')
 
-get('/ping/{domain}')
-get('/ping/{domain}/players')
-get('/ping/{domain}/icon')
-get('/ping/{domain}/motd')
-get('/ping/{domain}/player-count')
+* get('/ping/{domain}')
+* get('/ping/{domain}/players')
+* get('/ping/{domain}/icon')
+* get('/ping/{domain}/motd')
+* get('/ping/{domain}/player-count')
 
-get('/stats')
+* get('/stats')
