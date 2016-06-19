@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use \App\Player;
 use \App\Server;
 use \App\Skin;
+use \Carbon\Carbon;
 
 class StatsController extends ApiController
 {
@@ -13,14 +14,14 @@ class StatsController extends ApiController
         $total_players = Player::all()->count();
 
         //cache minutes into milliseconds
-        $expired = time() - 60 * 1000 * env('CACHE_LENGTH', 10);
-        $expired_players = Player::where('updated_at', '<=', time() - $expired)->count();
+        $expired = Carbon::now()->subMinute(60 * 1000 * env('CACHE_LENGTH', 10));
+        $expired_players = Player::where('updated_at', '<=', $expired)->count();
 
         $total_servers = Server::all()->count();
-        $expired_servers = Server::where('updated_at', '<=', time() - $expired)->count();
+        $expired_servers = Server::where('updated_at', '<=', $expired)->count();
 
         $total_skins = Skin::all()->count();
-        $expired_skins = Skin::where('updated_at', '<=', time() - $expired)->count();
+        $expired_skins = Skin::where('updated_at', '<=', $expired)->count();
 
         return [
             'current_time' => time(),
