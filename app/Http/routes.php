@@ -14,6 +14,10 @@
 $app->get('/uuid/{name}', 'NameController@uuid');
 $app->get('/hasPaid/{username}', 'NameController@hasPaid');
 
+$app->get('/name-history/{uuid}/all', 'NameHistoryController@all');
+$app->get('/name-history/{uuid}', 'NameHistoryController@nameHistory');
+$app->get('/name-history/{uuid}/{time}', 'NameHistoryController@nameHistoryAt');
+
 $app->get('/properties/{uuid}', 'SkinController@skin');
 $app->get('/skin/{uuid}', 'SkinController@skinImage');
 $app->get('/avatar/{uuid}', 'SkinController@avatarImage');
@@ -24,6 +28,6 @@ $app->get('/ping/{domain}', 'ServerController@ping');
 $app->get('/ping/{domain}/players', 'ServerController@players');
 $app->get('/ping/{domain}/icon', 'ServerController@icon');
 $app->get('/ping/{domain}/motd', 'ServerController@motd');
-$app->get('/ping/{domain}/playersCount', 'ServerController@playersCount');
+$app->get('/ping/{domain}/player-count', 'ServerController@playersCount');
 
 $app->get('/stats', 'StatsController@info');

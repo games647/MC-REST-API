@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "aa89ffb742ddf6bacf09427dd8e23fae",
-    "content-hash": "102d63dea4f59052ebcf1d385bc613a8",
+    "hash": "437c11dede1f6d8974cde31bf3664e67",
+    "content-hash": "839a3ce067fa669b27a2b4edacff0247",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -2176,7 +2176,7 @@
         },
         {
             "name": "spirit55555/php-minecraft",
-            "version": "dev-master",
+            "version": "v1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spirit55555/PHP-Minecraft.git",
@@ -4146,13 +4146,11 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "spirit55555/php-minecraft": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.6"
+        "php": ">=7.0"
     },
     "platform-dev": []
 }

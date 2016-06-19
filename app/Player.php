@@ -21,8 +21,12 @@ use \Carbon\Carbon;
  * @method static \Illuminate\Database\Query\Builder|\App\Player whereOfflineUuid($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Player whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Player whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\NameHistory[] $nameHistory
  */
-class Player extends Model {
+class Player extends Model
+{
+
+    const VALID_USERNAME = "/^\w{2,16}$/";
 
     /**
      * The attributes that are mass assignable.
@@ -40,7 +44,8 @@ class Player extends Model {
      *
      * @return string
      */
-    public function getOfflineUuidAttribute() {
+    public function getOfflineUuidAttribute()
+    {
         //extracted from the java code:
         //new GameProfile(UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8)), name));
         $data = hex2bin(md5("OfflinePlayer:" . $this->name));
@@ -49,6 +54,11 @@ class Player extends Model {
         //IETF variant
         $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
         return bin2hex($data);
+    }
+
+    public function nameHistory()
+    {
+        return $this->hasMany('App\NameHistory');
     }
 
     public function getCreatedAtAttribute($value)

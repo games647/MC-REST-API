@@ -18,7 +18,7 @@ All issues should be reported.
 - [X] SRV Resolve
 - [X] Has paid API
 - [X] Web stats
-- [ ] Name History API
+- [X] Name History API
 - [ ] Server Query API
 - [ ] Support for MCPE servers
 - [ ] Server version mapping
@@ -38,10 +38,11 @@ All issues should be reported.
 - [ ] Legacy (Mojang like routes and responses)
 - [ ] Mojang Assets, Status API
 - [ ] Caching (and cache headers) for images
+- [ ] Configurable HTTP-Proxies
 
 ## Goals
 
-* Workaround rate-limiting by global caching
+* Workaround rate-limiting by global caching and using http-proxies
 * Flexible API (if you have suggestions let us know)
 * Developer friendly, clear responses -> i.e. **NOT** returning a cracked player response if there is a issue with our servers
 * Open Source
@@ -94,8 +95,22 @@ Firefox: JSON View: https://addons.mozilla.org/en-US/firefox/addon/10869/
 
 ## Routes
 
-GET /uuid/{playerName}
+get('/uuid/{name}')
+get('/hasPaid/{username}')
 
-GET /skin/{uuid}
+get('/name-history/{uuid}')
+get('/name-history/{uuid}/{time}')
 
-GET /domain/{domain}
+get('/properties/{uuid}')
+get('/skin/{uuid}')
+get('/avatar/{uuid}')
+
+get('/domain/{domain}')
+
+get('/ping/{domain}')
+get('/ping/{domain}/players')
+get('/ping/{domain}/icon')
+get('/ping/{domain}/motd')
+get('/ping/{domain}/player-count')
+
+get('/stats')

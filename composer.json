@@ -14,7 +14,7 @@
         "predis/predis": "^1.1",
         "illuminate/redis": "^5.2",
         "xpaw/php-minecraft-query": "^1.0",
-        "spirit55555/php-minecraft": "dev-master"
+        "spirit55555/php-minecraft": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
