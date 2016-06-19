@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use \Cache;
 use \App\Skin;
+use \Log;
 use \MinecraftSkins\MinecraftSkins;
 
 class SkinController extends ApiController
@@ -22,6 +23,7 @@ class SkinController extends ApiController
         if (is_int($response)) {
             switch ($response) {
                 case ApiController::RATE_LIMIT_CODE:
+                    Log::info("RATE LIMITED on skin downloading", ["uuid" => $uuid]);
                     $player = Skin::whereUUID($uuid)->get();
                     if ($player == null) {
                         return response('', 429);

@@ -28,6 +28,7 @@ class NameController extends ApiController
             $response_code = $curl_info['http_code'];
             switch ($response_code) {
                 case ApiController::RATE_LIMIT_CODE:
+                    Log::info("RATE LIMITED on name->uuid", ["name" => $name]);
                     $player = Player::whereName($name)->firstOrFail();
                     return collect($player)->put('source', 'database');
                 case ApiController::UNKOWN_CODE:
@@ -80,6 +81,7 @@ class NameController extends ApiController
             $response_code = $curl_info['http_code'];
             switch ($response_code) {
                 case ApiController::RATE_LIMIT_CODE:
+                    Log::info("RATE LIMITED on haspaid", ["name" => $name]);
                     $player = Player::whereName($name)->firstOrFail();
                     return [
                         'username' => $cached->name,
