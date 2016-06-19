@@ -13,7 +13,8 @@
         "games647/minecraft-skin-renderer": "^0.2.1",
         "predis/predis": "^1.1",
         "illuminate/redis": "^5.2",
-        "xpaw/php-minecraft-query": "^1.0"
+        "xpaw/php-minecraft-query": "^1.0",
+        "spirit55555/php-minecraft": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

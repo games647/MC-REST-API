@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use \Spirit55555\Minecraft\MinecraftJsonColors;
 use \Carbon\Carbon;
 
 /**
@@ -34,6 +35,7 @@ use \Carbon\Carbon;
  * @property integer $port
  * @method static \Illuminate\Database\Query\Builder|\App\Server wherePort($value)
  * @property-read mixed $raw_motd
+ * @property-read mixed $plain_motd
  */
 class Server extends Model
 {
@@ -55,7 +57,7 @@ class Server extends Model
     public function setMotdAttribute($motd)
     {
         if (is_array($motd)) {
-            $motd = \MinecraftJsonColors::convertToLegacy($motd);
+            $motd = MinecraftJsonColors::convertToLegacy($motd);
         }
 
         $this->attributes['motd'] = $motd;
