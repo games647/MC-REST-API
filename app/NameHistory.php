@@ -26,6 +26,8 @@ use \Carbon\Carbon;
 class NameHistory extends Model
 {
 
+    protected $hidden = ['id'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -34,7 +36,6 @@ class NameHistory extends Model
     protected $fillable = [
         'name', 'changedToAt',
     ];
-
     //hide this from JSON, because it's useless
     protected $hidden = ['player_id'];
 

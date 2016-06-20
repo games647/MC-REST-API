@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Laravel\Lumen\Routing\Controller as BaseController;
 use \Cache;
 
-class OtherController extends ApiController
+class OtherController extends BaseController
 {
     public function domainRecords($domain)
     {

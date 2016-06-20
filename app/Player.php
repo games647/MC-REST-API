@@ -26,6 +26,8 @@ use \Carbon\Carbon;
 class Player extends Model
 {
 
+    protected $hidden = ['id'];
+
     const VALID_USERNAME = "/^\w{2,16}$/";
 
     /**
@@ -36,7 +38,6 @@ class Player extends Model
     protected $fillable = [
         'name', 'uuid',
     ];
-
     protected $appends = ['offline_uuid'];
 
     /**

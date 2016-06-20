@@ -39,6 +39,7 @@ use \Carbon\Carbon;
  */
 class Server extends Model
 {
+    protected $hidden = ['id'];
 
     /**
      * The attributes that are mass assignable.

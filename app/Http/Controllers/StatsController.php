@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Laravel\Lumen\Routing\Controller as BaseController;
 use \App\Player;
 use \App\Server;
 use \App\Skin;
 use \Carbon\Carbon;
 
-class StatsController extends ApiController
+class StatsController extends BaseController
 {
     public function info()
     {

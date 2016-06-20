@@ -35,7 +35,7 @@ use \Carbon\Carbon;
 class Skin extends Model
 {
     //hide this from JSON, because return a raw byte array causes issues
-    protected $hidden = ['signature'];
+    protected $hidden = ['signature', 'id'];
 
     //add these additional data to the JSON
     protected $appends = ['encoded_data', 'encoded_signature'];

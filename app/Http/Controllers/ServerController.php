@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Laravel\Lumen\Routing\Controller as BaseController;
 use \App\Server;
 use \Cache;
 use \xPaw\MinecraftPing;
 use \xPaw\MinecraftPingException;
 
-class ServerController extends ApiController
+class ServerController extends BaseController
 {
 
     const MINECRAFT_PORT = 25565;
