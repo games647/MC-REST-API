@@ -48,7 +48,11 @@ class MojangController extends BaseController
             $player = new Player;
             $player->uuid = $data['id'];
             $player->name = $data['name'];
-            $player->save();
+            if (count($player->getDirty()) > 0) {
+                $player->save();
+            } else {
+                $player->touch();
+            }
             //do not save it, because we don't know if it's up-to-date
             return $player;
         } finally {
@@ -67,9 +71,15 @@ class MojangController extends BaseController
             $data = json_decode($response, true);
             $uuid = $data['id'];
 
+            /* @var $player Player */
             $player = Player::firstOrNew(['uuid' => $uuid]);
             $player->name = $data['name'];
-            $player->save();
+            if (count($player->getDirty()) > 0) {
+                $player->save();
+            } else {
+                $player->touch();
+            }
+
             return $player;
         } finally {
             curl_close($request);
@@ -94,7 +104,9 @@ class MojangController extends BaseController
 
                 $player = Player::firstOrNew(['uuid' => $uuid]);
                 $player->name = $entry['name'];
-                $player->save();
+                if (!$player->save()) {
+                    $player->touch();
+                }
             }
 
             return $result;
@@ -121,7 +133,11 @@ class MojangController extends BaseController
             $name = $first_entry['name'];
             //update the last recently name globally on success
             $player->name = $first_entry['name'];
-            $player->save();
+            if (count($player->getDirty()) > 0) {
+                $player->save();
+            } else {
+                $player->touch();
+            }
 
             //override the update_at of the player to reflect all
             $result = collect($player)->put('updated_at', time());
@@ -173,7 +189,11 @@ class MojangController extends BaseController
                 }
             }
 
-            $skin->save();
+            if (count($skin->getDirty()) > 0) {
+                $skin->save();
+            } else {
+                $skin->touch();
+            }
             return $skin;
         } finally {
             curl_close($request);
