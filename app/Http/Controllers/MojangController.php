@@ -37,7 +37,23 @@ class MojangController extends BaseController
 
     public function uuidTimeMojang($name, $time)
     {
-        //todo
+        $url = str_replace('<timestamp>', $time, str_replace("<username>", $name, self::UUID_TIME_URL));
+        $request = $this->getConnection($url);
+        try {
+            $response = curl_exec($request);
+            $this->handleMojangException($request);
+
+            $data = json_decode($response, true);
+
+            $player = new Player;
+            $player->uuid = $data['id'];
+            $player->name = $data['name'];
+            $player->save();
+            //do not save it, because we don't know if it's up-to-date
+            return $player;
+        } finally {
+            curl_close($request);
+        }
     }
 
     public function uuidMojang($name)
@@ -52,7 +68,6 @@ class MojangController extends BaseController
             $uuid = $data['id'];
 
             $player = Player::firstOrNew(['uuid' => $uuid]);
-            $player->uuid = $uuid;
             $player->name = $data['name'];
             $player->save();
             return $player;
@@ -63,7 +78,29 @@ class MojangController extends BaseController
 
     public function uuidMultipleMojang($names)
     {
-//        todo
+        $url = str_replace("<username>", $name, self::UUID_URL);
+        $request = $this->getConnection($url);
+        curl_setopt($request, CURLOPT_POST, TRUE);
+        curl_setopt($request, CURLOPT_POSTFIELDS, $names);
+        try {
+            $response = curl_exec($request);
+            $this->handleMojangException($request);
+
+            $data = json_decode($response, true);
+
+            $result = collect();
+            foreach ($data as $entry) {
+                $uuid = $entry['id'];
+
+                $player = Player::firstOrNew(['uuid' => $uuid]);
+                $player->name = $entry['name'];
+                $player->save();
+            }
+
+            return $result;
+       } finally {
+            curl_close($request);
+        }
     }
 
     public function nameHistoryMojang($uuid)
