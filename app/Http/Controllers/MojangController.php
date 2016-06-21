@@ -170,38 +170,46 @@ class MojangController extends BaseController
             $this->handleMojangException($request);
 
             $data = json_decode($response, true);
-            $skinProperties = $data['properties'][0];
-
-            $skin = new Skin();
-            $skin->signature = base64_decode($skinProperties['signature']);
-
-            $skinData = json_decode(base64_decode($skinProperties['value']), true);
-            $skin->timestamp = $skinData['timestamp'];
-            $skin->profile_id = $skinData['profileId'];
-            $skin->profile_name = $skinData['profileName'];
-
-            $textures = $skinData['textures'];
-            if (isset($textures['SKIN'])) {
-                //no skin set
-                $skinTextures = $textures['SKIN'];
-                $skin->skin_url = $skinTextures['url'];
-                $skin->slim_model = isset($skinTextures['metadata']);
-
-                if (isset($textures['CAPE'])) {
-                    //user has a cape
-                    $skin->cape_url = $textures['CAPE']['url'];
-                }
-            }
+            $skin = $this->extractProperties($data);
 
             if (count($skin->getDirty()) > 0) {
                 $skin->save();
             } else {
                 $skin->touch();
             }
+
             return $skin;
         } finally {
             curl_close($request);
         }
+    }
+
+    protected function extractProperties($data)
+    {
+        $skinProperties = $data['properties'][0];
+
+        $skin = new Skin();
+        $skin->signature = base64_decode($skinProperties['signature']);
+
+        $skinData = json_decode(base64_decode($skinProperties['value']), true);
+        $skin->timestamp = $skinData['timestamp'];
+        $skin->profile_id = $skinData['profileId'];
+        $skin->profile_name = $skinData['profileName'];
+
+        $textures = $skinData['textures'];
+        if (isset($textures['SKIN'])) {
+            //no skin set
+            $skinTextures = $textures['SKIN'];
+            $skin->skin_url = $skinTextures['url'];
+            $skin->slim_model = isset($skinTextures['metadata']);
+
+            if (isset($textures['CAPE'])) {
+                //user has a cape
+                $skin->cape_url = $textures['CAPE']['url'];
+            }
+        }
+
+        return $skin;
     }
 
     protected function handleMojangException($request)

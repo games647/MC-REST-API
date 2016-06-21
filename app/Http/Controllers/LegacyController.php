@@ -139,6 +139,24 @@ class LegacyController extends MojangController
             $response = curl_exec($request);
 
             $data = json_decode($response, true);
+            $uuid = $data['id'];
+
+            $player = Player::firstOrNew(['uuid' => $uuid, 'name' => $name]);
+            Cache::put('uuid:' . $name, $player, env('CACHE_LENGTH', 10));
+            if (count($player->getDirty()) > 0) {
+                $player->save();
+            } else {
+                $player->touch();
+            }
+
+            $skin = $this->extractProperties($data);
+            Cache::put('skin:' . $uuid, $skin, env('CACHE_LENGTH', 10));
+            if (count($skin->getDirty()) > 0) {
+                $skin->save();
+            } else {
+                $skin->touch();
+            }
+
             return $data;
         } finally {
             curl_close($request);
