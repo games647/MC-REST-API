@@ -15,8 +15,9 @@ class MojangController extends BaseController
     const UUID_URL = "https://api.mojang.com/users/profiles/minecraft/<username>";
     const UUID_TIME_URL = "https://api.mojang.com/users/profiles/minecraft/<username>?at=<timestamp>";
     const MULTIPLE_UUID_URL = "https://api.mojang.com/profiles/minecraft";
-
+    
     const NAME_HISTORY_URL = "https://api.mojang.com/user/profiles/<uuid>/names";
+
     const SKIN_URL = "http://sessionserver.mojang.com/session/minecraft/profile/<uuid>?unsigned=false";
 
     protected function getConnection($url)
@@ -48,11 +49,8 @@ class MojangController extends BaseController
             $player = new Player;
             $player->uuid = $data['id'];
             $player->name = $data['name'];
-            if (count($player->getDirty()) > 0) {
-                $player->save();
-            } else {
-                $player->touch();
-            }
+            $this->saveOrTouch($player);
+
             //do not save it, because we don't know if it's up-to-date
             return $player;
         } finally {
@@ -74,11 +72,7 @@ class MojangController extends BaseController
             /* @var $player Player */
             $player = Player::firstOrNew(['uuid' => $uuid]);
             $player->name = $data['name'];
-            if (count($player->getDirty()) > 0) {
-                $player->save();
-            } else {
-                $player->touch();
-            }
+            $this->saveOrTouch($player);
 
             return $player;
         } finally {
@@ -108,13 +102,11 @@ class MojangController extends BaseController
 
                 $player = Player::firstOrNew(['uuid' => $uuid]);
                 $player->name = $entry['name'];
-                if (!$player->save()) {
-                    $player->touch();
-                }
+                $this->saveOrTouch($player);
             }
 
             return $result;
-       } finally {
+        } finally {
             curl_close($request);
         }
     }
@@ -137,11 +129,7 @@ class MojangController extends BaseController
             $name = $first_entry['name'];
             //update the last recently name globally on success
             $player->name = $first_entry['name'];
-            if (count($player->getDirty()) > 0) {
-                $player->save();
-            } else {
-                $player->touch();
-            }
+            $this->saveOrTouch($player);
 
             //override the update_at of the player to reflect all
             $result = collect($player)->put('updated_at', time());
@@ -171,12 +159,7 @@ class MojangController extends BaseController
 
             $data = json_decode($response, true);
             $skin = $this->extractProperties($data);
-
-            if (count($skin->getDirty()) > 0) {
-                $skin->save();
-            } else {
-                $skin->touch();
-            }
+            $this->saveOrTouch($skin);
 
             return $skin;
         } finally {
@@ -225,6 +208,19 @@ class MojangController extends BaseController
                 break;
             default:
                 throw new MojangException;
+        }
+    }
+
+    /**
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model
+     */
+    protected function saveOrTouch($model)
+    {
+        if (count($model->getDirty()) > 0) {
+            $model->save();
+        } else {
+            $model->touch();
         }
     }
 }

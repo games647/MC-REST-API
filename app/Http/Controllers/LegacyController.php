@@ -118,7 +118,13 @@ class LegacyController extends MojangController
                 ];
         }
 
+        /* @var $variable Skin */
         $skin = $this->propertiesMojang($uuid);
+
+        $name = $skin->profile_name;
+        $player = Player::firstOrNew(['uuid' => $uuid, 'name' => $name]);
+        $this->saveOrTouch($player);
+        Cache::put('uuid:' . $name, $player, env('CACHE_LENGTH', 10));
         Cache::put('skin:' . $uuid, $skin, env('CACHE_LENGTH', 10));
         return [
                 'id' => $cached->profile_id,
@@ -143,19 +149,11 @@ class LegacyController extends MojangController
 
             $player = Player::firstOrNew(['uuid' => $uuid, 'name' => $name]);
             Cache::put('uuid:' . $name, $player, env('CACHE_LENGTH', 10));
-            if (count($player->getDirty()) > 0) {
-                $player->save();
-            } else {
-                $player->touch();
-            }
+            $this->saveOrTouch($player);
 
             $skin = $this->extractProperties($data);
             Cache::put('skin:' . $uuid, $skin, env('CACHE_LENGTH', 10));
-            if (count($skin->getDirty()) > 0) {
-                $skin->save();
-            } else {
-                $skin->touch();
-            }
+            $this->saveOrTouch($skin);
 
             return $data;
         } finally {

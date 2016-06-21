@@ -23,6 +23,10 @@ class SkinController extends MojangController
         try {
             $skin = $this->propertiesMojang($uuid);
 
+            $name = $skin->profile_name;
+            $player = Player::firstOrCreate(['uuid' => $uuid, 'name' => $name]);
+            $this->saveOrTouch($player);
+            Cache::put('uuid:' . $name, $player, env('CACHE_LENGTH', 10));
             Cache::put('skin:' . $uuid, $skin, env('CACHE_LENGTH', 10));
             return collect($skin)->put('source', 'mojang');
         } catch (RateLimitException $ex) {
@@ -68,6 +72,10 @@ class SkinController extends MojangController
         try {
             $skin = $this->propertiesMojang($uuid);
 
+            $name = $skin->profile_name;
+            $player = Player::firstOrCreate(['uuid' => $uuid, 'name' => $name]);
+            $this->saveOrTouch($player);
+            Cache::put('uuid:' . $name, $player, env('CACHE_LENGTH', 10));
             Cache::put('skin:' . $uuid, $skin, env('CACHE_LENGTH', 10));
             $skin_url = $skin->skin_url;
             if ($skin_url !== NULL) {
@@ -123,6 +131,10 @@ class SkinController extends MojangController
         try {
             $skin = $this->propertiesMojang($uuid);
 
+            $name = $skin->profile_name;
+            $player = Player::firstOrCreate(['uuid' => $uuid, 'name' => $name]);
+            $this->saveOrTouch($player);
+            Cache::put('uuid:' . $name, $player, env('CACHE_LENGTH', 10));
             Cache::put('skin:' . $uuid, $skin, env('CACHE_LENGTH', 10));
             $skin_url = $skin->skin_url;
             if ($skin_url !== NULL) {
