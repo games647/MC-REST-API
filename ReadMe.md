@@ -35,7 +35,7 @@ All issues should be reported.
 - [ ] Votifier API
 - [ ] Blocked server query
 - [ ] Ban API
-- [ ] Legacy (Mojang like routes and responses)
+- [X] Legacy (Mojang like routes and responses)
 - [ ] Mojang Assets, Status API
 - [ ] Caching (and cache headers) for images
 - [ ] Configurable HTTP-Proxies

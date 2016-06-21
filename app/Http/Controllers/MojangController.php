@@ -88,6 +88,10 @@ class MojangController extends BaseController
 
     public function uuidMultipleMojang($names)
     {
+        if (empty($names)) {
+            return [];
+        }
+
         $url = str_replace("<username>", $name, self::UUID_URL);
         $request = $this->getConnection($url);
         curl_setopt($request, CURLOPT_POST, TRUE);

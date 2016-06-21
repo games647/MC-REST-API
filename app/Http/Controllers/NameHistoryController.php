@@ -32,6 +32,11 @@ class NameHistoryController extends MojangController
 
     public function all($uuid)
     {
+        $cached = Cache::get('history' . $uuid);
+        if ($cached !== NULL) {
+            return $cached->put('source', 'cache');
+        }
+
         try {
             $result = $this->nameHistoryMojang($uuid);
 

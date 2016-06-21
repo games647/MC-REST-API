@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use \Cache;
+use \App\Player;
 use \App\Skin;
 use \Log;
 use \MinecraftSkins\MinecraftSkins;
