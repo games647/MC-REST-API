@@ -6,19 +6,19 @@
     "type": "project",
     "require": {
         "php": ">=7.0",
-        "laravel/lumen-framework": "5.2.*",
+        "laravel/lumen-framework": "5.3.*",
         "vlucas/phpdotenv": "~2.2",
         "barryvdh/laravel-ide-helper": "^2.2",
         "doctrine/dbal": "^2.5",
         "games647/minecraft-skin-renderer": "^0.2.1",
         "predis/predis": "^1.1",
-        "illuminate/redis": "^5.2",
-        "xpaw/php-minecraft-query": "^1.0",
+        "illuminate/redis": "^5.3",
+        "xpaw/php-minecraft-query": "^2.0",
         "spirit55555/php-minecraft": "^1.1"
     },
     "require-dev": {
-        "fzaninotto/faker": "~1.4",
-        "phpunit/phpunit": "~4.0"
+        "fzaninotto/faker": "^1.6",
+        "phpunit/phpunit": "^5.7"
     },
     "autoload": {
         "psr-4": {

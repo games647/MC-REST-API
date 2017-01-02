@@ -13,17 +13,17 @@
 
 //why does this subdomain doesn't work?
 //$app->group(['prefix' => 'legacy'], function () use ($app) {
-    $app->get('/users/profiles/minecraft/{username}', 'LegacyController@uuid');
+$app->get('/users/profiles/minecraft/{username}', 'LegacyController@uuid');
 
-    $app->get('/users/profiles/minecraft/{username}/{timestamp}', 'LegacyControler@uuidAtTime');
+$app->get('/users/profiles/minecraft/{username}/{timestamp}', 'LegacyControler@uuidAtTime');
 
-    $app->get('/user/profiles/{uuid}/names', 'LegacyControler@nameHistory');
+$app->get('/user/profiles/{uuid}/names', 'LegacyControler@nameHistory');
 
-    $app->post('/profiles/minecraft', 'LegacyControler@multipleUuid');
+$app->post('/profiles/minecraft', 'LegacyControler@multipleUuid');
 
-    $app->get('/session/minecraft/profile/<uuid>', 'LegacyControler@skin');
+$app->get('/session/minecraft/profile/<uuid>', 'LegacyControler@skin');
 
-    $app->get('/session/minecraft/hasJoined?username={username}&serverId={hash}', 'LegacyControler@hasJoined');
+$app->get('/session/minecraft/hasJoined?username={username}&serverId={hash}', 'LegacyControler@hasJoined');
 //});
 
 $app->get('/uuid/{name}', 'NameController@uuid');

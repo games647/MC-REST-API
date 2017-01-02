@@ -1,2 +1,6 @@
 /vendor
 .env
+
+/.idea
+*.iml
+nbproject/private/
